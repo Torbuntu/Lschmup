@@ -19,6 +19,7 @@ class Lschmup extends LeikrEngine{
 		p.x = 5;
 		p.xv = 0;
 		p.yv = 0;
+		p.health = 3;
 
 		rand = new Random();
 
@@ -31,7 +32,6 @@ class Lschmup extends LeikrEngine{
 			clouds.add(temp);
 		}
 	
-		
 		def e = [:];
 		e.x = getScreenWidth();
 		e.y = rand.nextInt(((getScreenHeight()-16) - 16)+1)+16;
@@ -122,16 +122,22 @@ class Lschmup extends LeikrEngine{
 					score += 10;
 				}
 			}
+			
+			// Need to implement some sort of tmp invincibility after a hit.
+			if(p.x >= e.x && p.x <= e.x+8 && p.y >= e.y && p.y <= e.y+8){
+				p.health--;
+			}
 		}
 		bullets.removeAll{it.hit == true;}
 		enemies.removeAll{it.dead == true;}
+
 	}
 
 
     def void render(float dt){
 		//bg
 		rect(0, 0, getScreenWidth(), getScreenHeight(), 6, "filled");
-		drawText("Score: "+score, 1, getScreenHeight() - 8, 2);
+		
 		hit();
 		renderClouds();
 	
@@ -148,6 +154,11 @@ class Lschmup extends LeikrEngine{
 
 		if(enemies.size() == 0){
 			addWave();
+		}
+		drawText("Score: "+score, 1, getScreenHeight() - 8, 2);
+
+		for(int i = 0; i < p.health; i++){
+			sprite(3, (1+8*i), getScreenHeight()-9);
 		}
     }
 }
