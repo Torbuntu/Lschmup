@@ -11,6 +11,7 @@ class Lschmup extends LeikrEngine{
 	def wave = 1;
 
 	Random rand;
+	def shootSound;
 
     def void create(){
 
@@ -39,6 +40,7 @@ class Lschmup extends LeikrEngine{
 		e.sprite = 16;
 		e.dead = false;
 		enemies.add(e);
+		shootSound = getSfx(0);
     }
 
 	void addWave(){
@@ -62,6 +64,7 @@ class Lschmup extends LeikrEngine{
 			b.xv = 4;
 			b.hit = false;
 			bullets.add(b);
+			playSfx(shootSound, 1, 5, 0);
 		}
 	}
 
@@ -160,5 +163,19 @@ class Lschmup extends LeikrEngine{
 		for(int i = 0; i < p.health; i++){
 			sprite(3, (1+8*i), getScreenHeight()-9);
 		}
+
+		if(p.health < 1){
+			p.health = 3;
+			score = 0;
+			wave = 1;
+			enemies.removeAll();
+			def e = [:];
+			e.x = getScreenWidth();
+			e.y = rand.nextInt(((getScreenHeight()-16) - 16)+1)+16;
+			e.s = rand.nextInt((4-1)+1)+1;
+			e.sprite = 16;
+			e.dead = false;
+			enemies.add(e);
+		} 
     }
 }
