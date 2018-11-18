@@ -50,7 +50,7 @@ class Lschmup extends LeikrEngine{
 				e.x = getScreenWidth();
 				e.y = rand.nextInt(((getScreenHeight()-16) - 16)+1)+16;
 				e.s = rand.nextInt((4-1)+1)+1;
-				e.sprite = 16;
+				e.sprite = wave > 10 ? 17 : 16;
 				e.dead = false;
 				enemies.add(e);
 		}
@@ -159,9 +159,10 @@ class Lschmup extends LeikrEngine{
 			addWave();
 		}
 		drawText("Score: "+score, 1, getScreenHeight() - 8, 2);
+		drawText("Wave: "+wave, 1, getScreenHeight() - 16, 2);
 
 		for(int i = 0; i < p.health; i++){
-			sprite(3, (1+8*i), getScreenHeight()-9);
+			sprite(3, (1+8*i), getScreenHeight()-24);
 		}
 
 		if(p.health < 1){
